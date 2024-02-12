@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Flutter Assignment2',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade700),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 31, 47, 78)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Home Page'),
@@ -37,6 +37,10 @@ class _MyHomePageState extends State<MyHomePage> {
   int myIndex = 0;
 
   void _onItemTapped(int index) {
+    setState(() {
+      myIndex = index;
+    });
+
     // Handle navigation to different pages based on index
     switch (index) {
       case 0:
@@ -47,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         break;
       case 1:
-        // No need to navigate to the Home page as it's already the current page
+        // Do nothing as it's the current page (Home)
         break;
       case 2:
         // Navigate to the Calculator page
@@ -67,8 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
         // list of menu items
         children: [
           menuItem(Icons.home, "Home"),
-          menuItem(Icons.calculate, "Calculator"),
           menuItem(Icons.account_circle, "About"),
+          menuItem(Icons.calculate, "Calculator"),
+       
           // Add more menu items as needed
         ],
       ),
@@ -109,16 +114,17 @@ class _MyHomePageState extends State<MyHomePage> {
       case "Home":
         // Do something for Home
         break;
-      case "Calculator":
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CalculatorPage()),
-        );
-        break;
+      
       case "About":
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AboutPage()),
+        );
+        break;
+        case "Calculator":
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
       // Add more cases for other menu items as needed
@@ -132,24 +138,34 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Welcome to the App I created',
-            ),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/m1.jpg'), // replace with your image asset path
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'Welcome to the HomePage',
+                style: TextStyle(color: Color.fromARGB(255, 10, 10, 10)), // adjust text color as needed
+              ),
+              // Add more widgets as needed
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: Color.fromARGB(255, 31, 47, 78),
         onTap: _onItemTapped,
-        currentIndex: 1,
+        currentIndex: myIndex,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculate'),
+           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
+          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculater'),
         ],
       ),
       drawer: Drawer(

@@ -37,8 +37,9 @@ Widget MyDrawerList() {
         // list of menu items
         children: [
           menuItem(Icons.home, "Home"),
-          menuItem(Icons.calculate, "Calculator"),
           menuItem(Icons.account_circle, "About"),
+          menuItem(Icons.calculate, "Calculator"),
+  
           // Add more menu items as needed
         ],
       ),
@@ -75,18 +76,19 @@ Widget menuItem(IconData icon, String title) {
 void _onMenuItemSelected(String title) {
     // Handle navigation or perform actions based on the selected menu item
     switch (title) {
-      case "About":
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AboutPage()),
-        );
-        break;
       case "Home":
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MyApp()),
         );
         break;
+      case "About":
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AboutPage()),
+        );
+        break;
+    
       case "Calculator":
 
         break;
@@ -107,8 +109,8 @@ void _onMenuItemSelected(String title) {
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          title: Text('Calculator'),
-          backgroundColor: Colors.grey[700],
+          title: Text('Standard Calculator'),
+          backgroundColor: const Color.fromARGB(255, 31, 47, 78),
           // Replace the back button with a drawer
           leading: Builder(
             builder: (BuildContext context) {
@@ -165,7 +167,7 @@ void _onMenuItemSelected(String title) {
                   calcbutton('AC', Colors.grey, Colors.black),
                   calcbutton('+/-', Colors.grey, Colors.black),
                   calcbutton('%', Colors.grey, Colors.black),
-                  calcbutton('/', Colors.green[700]!, Colors.white),
+                  calcbutton('/', Color.fromARGB(255, 31, 47, 78), Colors.white),
                 ],
               ),
               SizedBox(height: 10,),
@@ -175,7 +177,7 @@ void _onMenuItemSelected(String title) {
                   calcbutton('7', Colors.grey[850]!, Colors.white),
                   calcbutton('8', Colors.grey[850]!, Colors.white),
                   calcbutton('9', Colors.grey[850]!, Colors.white),
-                  calcbutton('x', Colors.green[700]!, Colors.white),
+                  calcbutton('x', Color.fromARGB(255, 31, 47, 78), Colors.white),
                 ],
               ),
               SizedBox(height: 10,),
@@ -185,7 +187,7 @@ void _onMenuItemSelected(String title) {
                   calcbutton('4', Colors.grey[850]!, Colors.white),
                   calcbutton('5', Colors.grey[850]!, Colors.white),
                   calcbutton('6', Colors.grey[850]!, Colors.white),
-                  calcbutton('-', Colors.green[700]!, Colors.white),
+                  calcbutton('-', const Color.fromARGB(255, 31, 47, 78), Colors.white),
                 ],
               ),
               SizedBox(height: 10,),
@@ -195,7 +197,7 @@ void _onMenuItemSelected(String title) {
                   calcbutton('1', Colors.grey[850]!, Colors.white),
                   calcbutton('2', Colors.grey[850]!, Colors.white),
                   calcbutton('3', Colors.grey[850]!, Colors.white),
-                  calcbutton('+', Colors.green[700]!, Colors.white),
+                  calcbutton('+', const Color.fromARGB(255, 31, 47, 78), Colors.white),
                 ],
               ),
               SizedBox(height: 10,),
@@ -229,9 +231,10 @@ void _onMenuItemSelected(String title) {
                 onTap: _onItemTapped,
                 currentIndex: 2, // Set the current index to 2 for Calculator
                 items: [
-                  BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
-                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                  BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
+        
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
+          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculater'),
                 ],
               ),
             ],

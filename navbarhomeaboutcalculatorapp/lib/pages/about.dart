@@ -16,7 +16,7 @@ class AboutPage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green.shade700),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 31, 47, 78)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'About Page'), // Reverted back to MyHomePage
@@ -70,8 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // list of menu items
         children: [
           menuItem(Icons.home, "Home"),
-          menuItem(Icons.calculate, "Calculator"),
           menuItem(Icons.account_circle, "About"),
+          menuItem(Icons.calculate, "Calculator"),
           // Add more menu items as needed
         ],
       ),
@@ -109,15 +109,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onMenuItemSelected(String title) {
     // Handle navigation or perform actions based on the selected menu item
     switch (title) {
+            case "Home":
+        // No need to navigate to the Home page since it's already on the Home page
+        break;
       case "About":
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AboutPage()),
         );
         break;
-      case "Home":
-        // No need to navigate to the Home page since it's already on the Home page
-        break;
+
       case "Calculator":
         Navigator.push(
           context,
@@ -140,19 +141,19 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'Welcome to the About Page on the App I created',
+              'Welcome to the About Page on the App I created by Kayiranga Moise',
             ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: const Color.fromARGB(255, 31, 47, 78),
         onTap: _onItemTapped,
         currentIndex: 0,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
+        items: [  
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculate'),
+           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
+          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculater'),
         ],
       ),
       drawer: Drawer(

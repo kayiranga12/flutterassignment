@@ -11,7 +11,7 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.green[700],
+      color: const Color.fromARGB(255, 31, 47, 78),
       width: double.infinity,
       height: 200,
       padding: EdgeInsets.only(top: 20.0),
@@ -28,7 +28,7 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
             ),
           ),
           Text("Profile", style: TextStyle(color: Colors.white, fontSize: 20)),
-          Text("info@email.com", style: TextStyle(color: Colors.grey[200], fontSize: 14)),
+          Text("Kayiranga420@gmail.com", style: TextStyle(color: Colors.grey[200], fontSize: 14)),
         ],
       ),
     );
