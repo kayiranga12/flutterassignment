@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:navbarhomeaboutcalculatorapp/main.dart';
 import 'package:navbarhomeaboutcalculatorapp/my_drawer_header.dart';
+// import 'package:navbarhomeaboutcalculatorapp/pages/login_page.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/settings.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/signin_screen.dart';
 import 'calculator.dart';
 
-void main() {
-  runApp(const AboutPage());
-}
-
 class AboutPage extends StatelessWidget {
-  const AboutPage({super.key});
+  const AboutPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +15,15 @@ class AboutPage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 31, 47, 78)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 59, 94, 165)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'About Page'), // Reverted back to MyHomePage
     );
   }
 }
+
+// Add any additional widgets or logic for the AboutPage as needed.
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -39,19 +40,20 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onItemTapped(int index) {
     // Handle navigation to different pages based on index
     switch (index) {
-      case 0:
-        // Navigate to the About page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AboutPage()),
-        );        break;
-      case 1:
+            case 0:
         // Navigate to the Home page
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MyApp()),
         );
         break;
+      case 1:
+        // Navigate to the About page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AboutPage()),
+        );        break;
+
       case 2:
         // Navigate to the Calculator page
         Navigator.push(
@@ -63,20 +65,23 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Widget MyDrawerList() {
-    return Container(
-      padding: EdgeInsets.only(top: 15),
-      child: Column(
-        // list of menu items
-        children: [
-          menuItem(Icons.home, "Home"),
-          menuItem(Icons.account_circle, "About"),
-          menuItem(Icons.calculate, "Calculator"),
-          // Add more menu items as needed
-        ],
-      ),
-    );
-  }
+Widget MyDrawerList() {
+  return Container(
+    padding: EdgeInsets.only(top: 15),
+    child: Column(
+      // list of menu items
+      children: [
+        menuItem(Icons.home, "Home"),
+        menuItem(Icons.account_circle, "About"),
+        menuItem(Icons.calculate, "Calculator"),
+        SizedBox(height: 300),
+
+        menuItem(Icons.settings, "Setting"),
+        menuItem(Icons.logout, "Logout"),
+      ],
+    ),
+  );
+}
 
   Widget menuItem(IconData icon, String title) {
     return Material(
@@ -126,6 +131,19 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         break;
       // Add more cases for other menu items as needed
+            case "Setting":
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Settings()),
+        );
+        break;
+           case "Logout":
+      // Navigate to the login page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignInScreen()),
+      );
+      break;
     }
   }
 
@@ -152,8 +170,8 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: 0,
         items: [  
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
-          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculater'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
+          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
         ],
       ),
       drawer: Drawer(

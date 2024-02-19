@@ -8,6 +8,14 @@ class MyHeaderDrawer extends StatefulWidget {
 }
 
 class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
+  bool isSwitched = false;
+
+  void switchPicture() {
+    setState(() {
+      isSwitched = !isSwitched;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,10 +33,35 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white, // Set the color to white
+              // Use a conditional expression to switch between two pictures
+              image: DecorationImage(
+                image: isSwitched
+                    ? AssetImage('assets/p1.png') // Replace with your image path
+                    : AssetImage('assets/p2.png'), // Replace with your image path
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          Text("Profile", style: TextStyle(color: Colors.white, fontSize: 20)),
+          Text("Profile", style: TextStyle(color: Colors.white, fontSize: 30)),
           Text("Kayiranga420@gmail.com", style: TextStyle(color: Colors.grey[200], fontSize: 14)),
+          SizedBox(height: 10),
+          GestureDetector(
+            onTap: switchPicture,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.switch_account,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  'Switch Picture',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

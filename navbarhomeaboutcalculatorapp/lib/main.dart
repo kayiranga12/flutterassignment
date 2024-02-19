@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:navbarhomeaboutcalculatorapp/my_drawer_header.dart';
+import 'package:navbarhomeaboutcalculatorapp/Provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'pages/about.dart';
 import 'pages/calculator.dart';
+import 'pages/settings.dart';
+import 'package:navbarhomeaboutcalculatorapp/my_drawer_header.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/signin_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -12,20 +17,69 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Assignment2',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 31, 47, 78)),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (BuildContext context)=>UiProvider()..init(),
+      child: Consumer<UiProvider>(
+        builder: (context, UiProvider notifier, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Dark Theme',
+            //By default theme setting, you can also set system
+            // when your mobile theme is dark the app also become dark
+
+            themeMode: notifier.isDark? ThemeMode.dark : ThemeMode.light,
+
+            //Our custom theme applied
+            darkTheme: notifier.isDark? notifier.darkTheme : notifier.lightTheme,
+          
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 59, 94, 165)),
+              useMaterial3: true,
+            ),
+            // home: const Settings(),
+             home: MyHomePage(title: 'Home Page'),
+            // home: const WelcomeScreen()
+          );
+        }
       ),
-      home: const MyHomePage(title: 'Home Page'),
     );
   }
 }
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+//   runApp(
+//     ChangeNotifierProvider<myProvider.UiProvider>(
+//       create: (context) => myProvider.UiProvider()..init(),
+//       child: MyApp(),
+//     ),
+//   );
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Consumer<myProvider.UiProvider>(
+//       builder: (context, myProvider.UiProvider notifier, child) {
+//         return MaterialApp(
+//           debugShowCheckedModeBanner: false,
+//           title: 'Flutter Assignment2',
+//           theme: ThemeData(
+//             colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 31, 47, 78)),
+//             useMaterial3: true,
+//           ),
+//           themeMode: notifier.isDark ? ThemeMode.dark : ThemeMode.light,
+//           darkTheme: notifier.isDark ? notifier.darkTheme : notifier.lightTheme,
+//           home: MyHomePage(title: 'Home Page'),
+//         );
+//       },
+//     );
+//   }
+// }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -41,26 +95,22 @@ class _MyHomePageState extends State<MyHomePage> {
       myIndex = index;
     });
 
-    // Handle navigation to different pages based on index
     switch (index) {
       case 0:
-        // Navigate to the About page
+        // Do nothing as it's the current page (Home)
+        break;
+      case 1:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AboutPage()),
         );
         break;
-      case 1:
-        // Do nothing as it's the current page (Home)
-        break;
       case 2:
-        // Navigate to the Calculator page
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
-      // Add more cases for other bottom navigation items if needed
     }
   }
 
@@ -68,13 +118,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       padding: EdgeInsets.only(top: 15),
       child: Column(
-        // list of menu items
         children: [
           menuItem(Icons.home, "Home"),
           menuItem(Icons.account_circle, "About"),
           menuItem(Icons.calculate, "Calculator"),
-       
-          // Add more menu items as needed
+          SizedBox(height: 300),
+          menuItem(Icons.settings, "Setting"),
+          menuItem(Icons.logout, "Logout"),
         ],
       ),
     );
@@ -84,7 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Material(
       child: InkWell(
         onTap: () {
-          // Add functionality for the menu item here
           _onMenuItemSelected(title);
         },
         child: Padding(
@@ -109,25 +158,36 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onMenuItemSelected(String title) {
-    // Handle navigation or perform actions based on the selected menu item
     switch (title) {
       case "Home":
         // Do something for Home
         break;
-      
+
       case "About":
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AboutPage()),
         );
         break;
-        case "Calculator":
+      case "Calculator":
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
-      // Add more cases for other menu items as needed
+      case "Setting":
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Settings()),
+        );
+        break;
+        case "Logout":
+      // Navigate to the login page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignInScreen()),
+      );
+      break;
     }
   }
 
@@ -138,34 +198,16 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/m1.jpg'), // replace with your image asset path
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Welcome to the HomePage',
-                style: TextStyle(color: Color.fromARGB(255, 10, 10, 10)), // adjust text color as needed
-              ),
-              // Add more widgets as needed
-            ],
-          ),
-        ),
-      ),
+
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color.fromARGB(255, 31, 47, 78),
         onTap: _onItemTapped,
         currentIndex: myIndex,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
-          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculater'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
+          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
+          // BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'), // Added the Settings item
         ],
       ),
       drawer: Drawer(
