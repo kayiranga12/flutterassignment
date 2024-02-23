@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MyHeaderDrawer extends StatefulWidget {
   const MyHeaderDrawer({super.key});
@@ -8,12 +11,87 @@ class MyHeaderDrawer extends StatefulWidget {
 }
 
 class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
-  bool isSwitched = false;
+  Uint8List? _image;
+  File? selectedImage;
 
-  void switchPicture() {
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.blue[100],
+      context: context,
+      builder: (builder) {
+        return Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 4.5,
+            child: Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      _pickImageFromGallery();
+                    },
+                    child: const SizedBox(
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.image,
+                            size: 70,
+                          ),
+                          Text("Gallery")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      _pickImageFromCamera();
+                    },
+                    child: const SizedBox(
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            size: 70,
+                          ),
+                          Text("Camera")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Gallery
+  Future _pickImageFromGallery() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
     setState(() {
-      isSwitched = !isSwitched;
+      selectedImage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
     });
+    Navigator.of(context).pop(); // close the modal sheet
+  }
+
+  // Camera
+  Future _pickImageFromCamera() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
+    setState(() {
+      selectedImage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    Navigator.of(context).pop();
   }
 
   @override
@@ -26,37 +104,32 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 10),
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white, // Set the color to white
-              // Use a conditional expression to switch between two pictures
-              image: DecorationImage(
-                image: isSwitched
-                    ? AssetImage('assets/p1.png') // Replace with your image path
-                    : AssetImage('assets/p2.png'), // Replace with your image path
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Text("Profile", style: TextStyle(color: Colors.white, fontSize: 30)),
-          Text("Kayiranga420@gmail.com", style: TextStyle(color: Colors.grey[200], fontSize: 14)),
-          SizedBox(height: 10),
+          selectedImage != null
+              ? CircleAvatar(
+                  radius: 60, backgroundImage: MemoryImage(_image!))
+              : const CircleAvatar(
+                  radius: 60,
+                  backgroundImage: NetworkImage(
+                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"),
+                ),
+          // Text("Profile", style: TextStyle(color: Colors.white, fontSize: 30)),
+          Text("Kayiranga420@gmail.com",
+              style: TextStyle(color: Colors.grey[200], fontSize: 14)),
+          SizedBox(height: 5),
           GestureDetector(
-            onTap: switchPicture,
+            onTap: () {
+              showImagePickerOption(context);
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.switch_account,
+                  Icons.add_a_photo,
                   color: Colors.white,
                 ),
                 SizedBox(width: 8),
                 Text(
-                  'Switch Picture',
+                  'Change Picture',
                   style: TextStyle(color: Colors.white),
                 ),
               ],

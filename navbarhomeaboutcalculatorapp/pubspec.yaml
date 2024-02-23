@@ -14,6 +14,7 @@ dependencies:
   connectivity: ^3.0.6
   icons_plus: ^1.0.0  # Use the appropriate version
   # flutter_icons: ^1.1.0  # Correctly added flutter_icons here
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

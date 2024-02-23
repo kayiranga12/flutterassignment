@@ -39,6 +39,7 @@ class Calculator extends StatefulWidget {
           menuItem(Icons.home, "Home"),
           menuItem(Icons.account_circle, "About"),
           menuItem(Icons.calculate, "Calculator"),
+           menuItem(Icons.contact_emergency_rounded, "Contact"),
           SizedBox(height: 300), 
 
           menuItem(Icons.settings, "Setting"),
@@ -94,6 +95,12 @@ class Calculator extends StatefulWidget {
         case "Calculator":
 
           break;
+          //         case "Contact":
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => contactpage()),
+          // );
+          // break;
         // Add more cases for other menu items as needed
                   case "Setting":
         Navigator.push(
@@ -250,6 +257,7 @@ class Calculator extends StatefulWidget {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
           BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
+            // BottomNavigationBarItem(icon: Icon(Icons.contact_emergency_rounded), label: 'Contact'),
 
                   ],
                 ),
@@ -397,6 +405,13 @@ class Calculator extends StatefulWidget {
         case 2:
           // No need to navigate to the Calculator page as it's already the current page
           break;
+          //        case 3:
+          // // Navigate to the About page
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => contactpage()),
+          // );
+          // break;
         // Add more cases for other bottom navigation items if needed
       }
     }

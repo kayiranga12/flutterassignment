@@ -111,6 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
+        //       case 3:
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => contactpage()),
+        // );
+        // break;
     }
   }
 
@@ -122,6 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
           menuItem(Icons.home, "Home"),
           menuItem(Icons.account_circle, "About"),
           menuItem(Icons.calculate, "Calculator"),
+          // menuItem(Icons.contact_emergency_rounded, "Contact"),
+          // menuItem(Icons.browse_gallery, "Gallery"),
+
           SizedBox(height: 300),
           menuItem(Icons.settings, "Setting"),
           menuItem(Icons.logout, "Logout"),
@@ -175,12 +184,19 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
+      //   case "contact":
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => contactpage()),
+      // );
+      break;
       case "Setting":
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Settings()),
         );
         break;
+
         case "Logout":
       // Navigate to the login page
       Navigator.pushReplacement(
@@ -207,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
           BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
-          // BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'), // Added the Settings item
+          // BottomNavigationBarItem(icon: Icon(Icons.contact_emergency_rounded), label: 'contact'), 
         ],
       ),
       drawer: Drawer(
