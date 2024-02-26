@@ -80,12 +80,12 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
-        case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ContactPage()),
-        );
-        break;
+        // case 3:
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => ContactPage()),
+        // );
+        // break;
     }
   }
 

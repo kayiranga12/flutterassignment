@@ -63,13 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         break;
 
-             case 3:
-        // Navigate to the Calculator page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ContactPage()),
-        );
-        break;
+        //      case 3:
+        // // Navigate to the Calculator page
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => ContactPage()),
+        // );
+        // break;
       // Add more cases for other bottom navigation items if needed
     }
   }
@@ -140,7 +140,7 @@ Widget MyDrawerList() {
           MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
-      //  case "Contact":
+       case "Contact":
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ContactPage()),
@@ -188,7 +188,7 @@ Widget MyDrawerList() {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
           BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
-          BottomNavigationBarItem(icon: Icon(Icons.phone), label: 'Contact'),
+          // BottomNavigationBarItem(icon: Icon(Icons.phone), label: 'Contact'),
         ],
       ),
       drawer: Drawer(
