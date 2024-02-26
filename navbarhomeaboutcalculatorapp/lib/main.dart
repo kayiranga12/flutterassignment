@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:navbarhomeaboutcalculatorapp/Provider/provider.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/contact.dart';
 import 'package:provider/provider.dart';
 import 'pages/about.dart';
 import 'pages/calculator.dart';
@@ -45,38 +46,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-//   runApp(
-//     ChangeNotifierProvider<myProvider.UiProvider>(
-//       create: (context) => myProvider.UiProvider()..init(),
-//       child: MyApp(),
-//     ),
-//   );
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Consumer<myProvider.UiProvider>(
-//       builder: (context, myProvider.UiProvider notifier, child) {
-//         return MaterialApp(
-//           debugShowCheckedModeBanner: false,
-//           title: 'Flutter Assignment2',
-//           theme: ThemeData(
-//             colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 31, 47, 78)),
-//             useMaterial3: true,
-//           ),
-//           themeMode: notifier.isDark ? ThemeMode.dark : ThemeMode.light,
-//           darkTheme: notifier.isDark ? notifier.darkTheme : notifier.lightTheme,
-//           home: MyHomePage(title: 'Home Page'),
-//         );
-//       },
-//     );
-//   }
-// }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -111,12 +80,12 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
-        //       case 3:
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => contactpage()),
-        // );
-        // break;
+        case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ContactPage()),
+        );
+        break;
     }
   }
 
@@ -128,8 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
           menuItem(Icons.home, "Home"),
           menuItem(Icons.account_circle, "About"),
           menuItem(Icons.calculate, "Calculator"),
-          // menuItem(Icons.contact_emergency_rounded, "Contact"),
-          // menuItem(Icons.browse_gallery, "Gallery"),
+          menuItem(Icons.phone, "Contact"),
 
           SizedBox(height: 300),
           menuItem(Icons.settings, "Setting"),
@@ -181,14 +149,14 @@ class _MyHomePageState extends State<MyHomePage> {
       case "Calculator":
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CalculatorPage()),
+          MaterialPageRoute(builder: (context) => Calculator()),
         );
         break;
-      //   case "contact":
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => contactpage()),
-      // );
+        case "contact":
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ContactPage()),
+      );
       break;
       case "Setting":
         Navigator.push(
@@ -223,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
           BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
-          // BottomNavigationBarItem(icon: Icon(Icons.contact_emergency_rounded), label: 'contact'), 
+          // BottomNavigationBarItem(icon: Icon(Icons.phone), label: 'contact'), 
         ],
       ),
       drawer: Drawer(

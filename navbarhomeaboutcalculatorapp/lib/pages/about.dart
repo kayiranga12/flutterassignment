@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:navbarhomeaboutcalculatorapp/main.dart';
 import 'package:navbarhomeaboutcalculatorapp/my_drawer_header.dart';
-// import 'package:navbarhomeaboutcalculatorapp/pages/contact.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/contact.dart';
 // import 'package:navbarhomeaboutcalculatorapp/pages/login_page.dart';
 import 'package:navbarhomeaboutcalculatorapp/pages/settings.dart';
 import 'package:navbarhomeaboutcalculatorapp/pages/signin_screen.dart';
@@ -63,13 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         break;
 
-        //      case 3:
-        // // Navigate to the Calculator page
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => contactpage()),
-        // );
-        // break;
+             case 3:
+        // Navigate to the Calculator page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ContactPage()),
+        );
+        break;
       // Add more cases for other bottom navigation items if needed
     }
   }
@@ -140,13 +140,12 @@ Widget MyDrawerList() {
           MaterialPageRoute(builder: (context) => CalculatorPage()),
         );
         break;
-
       //  case "Contact":
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => contactpage()),
-      //   );
-      //   break;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ContactPage()),
+        );
+        break;
       // Add more cases for other menu items as needed
             case "Setting":
         Navigator.push(
@@ -189,7 +188,7 @@ Widget MyDrawerList() {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
           BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
-        //  BottomNavigationBarItem(icon: Icon(Icons.phone), label: 'Contact'),
+          BottomNavigationBarItem(icon: Icon(Icons.phone), label: 'Contact'),
         ],
       ),
       drawer: Drawer(

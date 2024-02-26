@@ -2,6 +2,7 @@
   import 'package:navbarhomeaboutcalculatorapp/main.dart';
   import 'package:navbarhomeaboutcalculatorapp/my_drawer_header.dart';
   import 'package:navbarhomeaboutcalculatorapp/pages/about.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/contact.dart';
 import 'package:navbarhomeaboutcalculatorapp/pages/settings.dart';
 import 'package:navbarhomeaboutcalculatorapp/pages/signin_screen.dart';
 
@@ -39,7 +40,7 @@ class Calculator extends StatefulWidget {
           menuItem(Icons.home, "Home"),
           menuItem(Icons.account_circle, "About"),
           menuItem(Icons.calculate, "Calculator"),
-           menuItem(Icons.contact_emergency_rounded, "Contact"),
+           menuItem(Icons.phone, "Contact"),
           SizedBox(height: 300), 
 
           menuItem(Icons.settings, "Setting"),
@@ -95,12 +96,12 @@ class Calculator extends StatefulWidget {
         case "Calculator":
 
           break;
-          //         case "Contact":
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => contactpage()),
-          // );
-          // break;
+           case "Contact":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ContactPage()),
+          );
+          break;
         // Add more cases for other menu items as needed
                   case "Setting":
         Navigator.push(
@@ -283,7 +284,7 @@ class Calculator extends StatefulWidget {
           ),
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
-            primary: btncolor,
+            // primary: btncolor,
             padding: EdgeInsets.all(20),
           ),
         ),
@@ -405,11 +406,10 @@ class Calculator extends StatefulWidget {
         case 2:
           // No need to navigate to the Calculator page as it's already the current page
           break;
-          //        case 3:
-          // // Navigate to the About page
+          // case 3:
           // Navigator.push(
           //   context,
-          //   MaterialPageRoute(builder: (context) => contactpage()),
+          //   MaterialPageRoute(builder: (context) => ContactPage()),
           // );
           // break;
         // Add more cases for other bottom navigation items if needed

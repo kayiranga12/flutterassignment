@@ -1,206 +1,95 @@
-// import 'package:flutter/material.dart';
-// import 'package:navbarhomeaboutcalculatorapp/main.dart';
-// import 'package:navbarhomeaboutcalculatorapp/my_drawer_header.dart';
-// import 'package:navbarhomeaboutcalculatorapp/pages/about.dart';
-// // import 'package:navbarhomeaboutcalculatorapp/pages/login_page.dart';
-// import 'package:navbarhomeaboutcalculatorapp/pages/settings.dart';
-// import 'package:navbarhomeaboutcalculatorapp/pages/signin_screen.dart';
-// import 'calculator.dart';
+import 'package:flutter/material.dart';
+import 'package:contacts_service/contacts_service.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-// class contactpage extends StatelessWidget {
-//   const contactpage({Key? key}) : super(key: key);
+class ContactPage extends StatefulWidget {
+  const ContactPage({Key? key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Flutter ',
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 59, 94, 165)),
-//         useMaterial3: true,
-//       ),
-//       home: const MyHomePage(title: 'contact Page'), // Reverted back to MyHomePage
-//     );
-//   }
-// }
+  @override
+  _ContactPageState createState() => _ContactPageState();
+}
 
-// // Add any additional widgets or logic for the AboutPage as needed.
+class _ContactPageState extends State<ContactPage> {
+  List<Contact> _contacts = [];
 
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
+  @override
+  void initState() {
+    super.initState();
+    _fetchContacts();
+  }
 
-//   final String title;
+  Future<void> _fetchContacts() async {
+    if (await Permission.contacts.request().isGranted) {
+      // Get all contacts
+      final Iterable<Contact> contacts = await ContactsService.getContacts();
+      setState(() {
+        _contacts = contacts.toList();
+      });
+    } else {
+      // Handle the case when permission is denied
+      print("Contacts permission denied");
+    }
+  }
 
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
+  void _callContact(Contact contact) async {
+    final phoneNumber = contact.phones?.first.value;
 
-// class _MyHomePageState extends State<MyHomePage> {
-//   int myIndex = 0;
+    if (phoneNumber != null && await canLaunch("tel:$phoneNumber")) {
+      await launch("tel:$phoneNumber");
+    } else {
+      print("Could not launch phone call");
+    }
+  }
 
-//   void _onItemTapped(int index) {
-//     // Handle navigation to different pages based on index
-//     switch (index) {
-//             case 0:
-//         // Navigate to the Home page
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => MyApp()),
-//         );
-//         break;
-//       case 1:
-//         // Navigate to the About page
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => AboutPage()),
-//         );        break;
+  void _sendMessageToContact(Contact contact) async {
+  final phoneNumber = contact.phones?.first.value;
 
-//       case 2:
-//         // Navigate to the Calculator page
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => CalculatorPage()),
-//         );
-//         break;
-//            case 3:
-//         // Navigate to the Calculator page
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => contactpage()),
-//         );
-//         break;
-//       // Add more cases for other bottom navigation items if needed
-//     }
-//   }
+  if (phoneNumber != null) {
+    final message = "Your SMS message here";
+    final uri = Uri.encodeFull("sms:$phoneNumber?body=$message");
 
-// Widget MyDrawerList() {
-//   return Container(
-//     padding: EdgeInsets.only(top: 15),
-//     child: Column(
-//       // list of menu items
-//       children: [
-//         menuItem(Icons.home, "Home"),
-//         menuItem(Icons.account_circle, "About"),
-//         menuItem(Icons.calculate, "Calculator"),
-//          menuItem(Icons.contact_emergency, "Contact"),
-//         SizedBox(height: 300),
+    try {
+      await launch(uri);
+    } catch (e) {
+      print("Error launching messaging app: $e");
+    }
+  } else {
+    print("Phone number not available");
+  }
+}
 
-//         menuItem(Icons.settings, "Setting"),
-//         menuItem(Icons.logout, "Logout"),
-//       ],
-//     ),
-//   );
-// }
-
-//   Widget menuItem(IconData icon, String title) {
-//     return Material(
-//       child: InkWell(
-//         onTap: () {
-//           // Add functionality for the menu item here
-//           _onMenuItemSelected(title);
-//         },
-//         child: Padding(
-//           padding: EdgeInsets.all(15.0),
-//           child: Row(
-//             children: [
-//               Expanded(
-//                 flex: 1,
-//                 child: Icon(icon, size: 20, color: Colors.black),
-//               ),
-//               Expanded(
-//                 child: Text(
-//                   title,
-//                   style: TextStyle(color: Colors.black, fontSize: 16),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _onMenuItemSelected(String title) {
-//     // Handle navigation or perform actions based on the selected menu item
-//     switch (title) {
-//             case "Home":
-//         // No need to navigate to the Home page since it's already on the Home page
-//         break;
-//       case "About":
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => AboutPage()),
-//         );
-//         break;
-
-//       case "Calculator":
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => CalculatorPage()),
-//         );
-//         break;
-//                case "Contact":
-//     // No need to navigate to the Home page since it's already on the contact page
-//         break;
-//       // Add more cases for other menu items as needed
-//             case "Setting":
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => Settings()),
-//         );
-//         break;
-   
-//            case "Logout":
-//       // Navigate to the login page
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(builder: (context) => SignInScreen()),
-//       );
-//       break;
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             const Text(
-//               'Welcome to the contact Page on the App I created by Kayiranga Moise',
-//             ),
-//           ],
-//         ),
-//       ),
-//       bottomNavigationBar: BottomNavigationBar(
-//         backgroundColor: const Color.fromARGB(255, 31, 47, 78),
-//         onTap: _onItemTapped,
-//         currentIndex: 0,
-//         items: [  
-//           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-//           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
-//           BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
-//            BottomNavigationBarItem(icon: Icon(Icons.contact_emergency_rounded), label: 'Contact'),
-//         ],
-//       ),
-//       drawer: Drawer(
-//         child: SingleChildScrollView(
-//           child: Container(
-//             child: Column(
-//               children: [
-//                 MyHeaderDrawer(),
-//                 MyDrawerList(),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Contact'),
+      ),
+      body: ListView.builder(
+        itemCount: _contacts.length,
+        itemBuilder: (context, index) {
+          final contact = _contacts[index];
+          return ListTile(
+            title: Text(contact.displayName ?? ''),
+            subtitle: Text(contact.phones?.isNotEmpty == true
+                ? contact.phones!.first.value!
+                : 'No phone number'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.phone),
+                  onPressed: () => _callContact(contact),
+                ),
+                IconButton(
+                  icon: Icon(Icons.message),
+                  onPressed: () => _sendMessageToContact(contact),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

@@ -209,14 +209,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 25.0,
                       ),
                    Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    // CustomLogo(icon: FontAwesome.a.facebook),
-    CustomLogo(icon: FontAwesome.twitter),
-    CustomLogo(icon: FontAwesome.google),
-    CustomLogo(icon: FontAwesome.apple),
-  ],
-),
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                     children: [
+                    // CustomLogo(icon: FontAwesome.a.facebook),
+                     CustomLogo(icon: FontAwesome.twitter),
+                     CustomLogo(icon: FontAwesome.google),
+                     CustomLogo(icon: FontAwesome.apple),
+                    ],
+                         ),
                       const SizedBox(
                         height: 25.0,
                       ),
