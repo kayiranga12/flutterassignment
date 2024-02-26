@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:navbarhomeaboutcalculatorapp/Provider/provider.dart';
 import 'package:navbarhomeaboutcalculatorapp/pages/contact.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/welcome_screen.dart';
 import 'package:provider/provider.dart';
 import 'pages/about.dart';
 import 'pages/calculator.dart';
@@ -14,34 +15,36 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context)=>UiProvider()..init(),
+      create: (BuildContext context) => UiProvider()..init(),
       child: Consumer<UiProvider>(
         builder: (context, UiProvider notifier, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Dark Theme',
+            title: 'Flutter Assignment',
             //By default theme setting, you can also set system
             // when your mobile theme is dark the app also become dark
 
-            themeMode: notifier.isDark? ThemeMode.dark : ThemeMode.light,
+            themeMode:
+                notifier.isDark ? ThemeMode.dark : ThemeMode.light,
 
             //Our custom theme applied
-            darkTheme: notifier.isDark? notifier.darkTheme : notifier.lightTheme,
-          
+            darkTheme: notifier.isDark ? notifier.darkTheme : notifier.lightTheme,
+
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 59, 94, 165)),
+              colorScheme:
+                  ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 59, 94, 165)),
               useMaterial3: true,
             ),
             // home: const Settings(),
-             home: MyHomePage(title: 'Home Page'),
-            // home: const WelcomeScreen()
+            home: MyHomePage(title: 'Home Page'),
+            // home: const WelcomeScreen(),
           );
-        }
+        },
       ),
     );
   }
@@ -152,12 +155,12 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(builder: (context) => Calculator()),
         );
         break;
-        case "contact":
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ContactPage()),
-      );
-      break;
+      case "contact":
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ContactPage()),
+        );
+        break;
       case "Setting":
         Navigator.push(
           context,
@@ -165,13 +168,13 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         break;
 
-        case "Logout":
-      // Navigate to the login page
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => SignInScreen()),
-      );
-      break;
+      case "Logout":
+        // Navigate to the login page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SignInScreen()),
+        );
+        break;
     }
   }
 
@@ -189,9 +192,10 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: myIndex,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'About'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), label: 'About'),
           BottomNavigationBarItem(icon: Icon(Icons.calculate), label: 'Calculator'),
-          // BottomNavigationBarItem(icon: Icon(Icons.phone), label: 'contact'), 
+          // BottomNavigationBarItem(icon: Icon(Icons.phone), label: 'contact'),
         ],
       ),
       drawer: Drawer(
@@ -205,6 +209,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
+      ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/bg1.png', // replace this with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
+          Center(
+            child: Text(
+              'Welcome to my page',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

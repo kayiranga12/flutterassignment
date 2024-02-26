@@ -43,52 +43,77 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   void _sendMessageToContact(Contact contact) async {
-  final phoneNumber = contact.phones?.first.value;
+    final phoneNumber = contact.phones?.first.value;
 
-  if (phoneNumber != null) {
-    final message = "Your SMS message here";
-    final uri = Uri.encodeFull("sms:$phoneNumber?body=$message");
+    if (phoneNumber != null) {
+      final message = "Your SMS message here";
+      final uri = Uri.encodeFull("sms:$phoneNumber?body=$message");
 
-    try {
-      await launch(uri);
-    } catch (e) {
-      print("Error launching messaging app: $e");
+      try {
+        await launch(uri);
+      } catch (e) {
+        print("Error launching messaging app: $e");
+      }
+    } else {
+      print("Phone number not available");
     }
-  } else {
-    print("Phone number not available");
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contact'),
-      ),
-      body: ListView.builder(
-        itemCount: _contacts.length,
-        itemBuilder: (context, index) {
-          final contact = _contacts[index];
-          return ListTile(
-            title: Text(contact.displayName ?? ''),
-            subtitle: Text(contact.phones?.isNotEmpty == true
-                ? contact.phones!.first.value!
-                : 'No phone number'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.phone),
-                  onPressed: () => _callContact(contact),
-                ),
-                IconButton(
-                  icon: Icon(Icons.message),
-                  onPressed: () => _sendMessageToContact(contact),
-                ),
-              ],
+        title: Center(
+          child: Text(
+            'Contact',
+            style: TextStyle(
+              // color: const Color.fromARGB(255, 33, 65, 243), // Set the title color to blue
             ),
-          );
-        },
+          ),
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg1.png'), 
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: _contacts.length,
+          itemBuilder: (context, index) {
+            final contact = _contacts[index];
+            return Card(
+              color: Colors.white70,
+              elevation: 5,
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: ListTile(
+                title: Text(
+                  contact.displayName ?? '',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  contact.phones?.isNotEmpty == true
+                      ? contact.phones!.first.value!
+                      : 'No phone number',
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.phone, color: Colors.blue),
+                      onPressed: () => _callContact(contact),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.message, color: Colors.green),
+                      onPressed: () => _sendMessageToContact(contact),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

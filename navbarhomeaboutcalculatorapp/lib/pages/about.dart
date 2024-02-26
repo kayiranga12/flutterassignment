@@ -170,15 +170,25 @@ Widget MyDrawerList() {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/bg1.png', // replace this with your image path
+            fit: BoxFit.cover,
+          ),
+          Center(
+            child: Text(
               'Welcome to the About Page on the App I created by Kayiranga Moise',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 31, 47, 78),
@@ -206,4 +216,3 @@ Widget MyDrawerList() {
     );
   }
 }
-
