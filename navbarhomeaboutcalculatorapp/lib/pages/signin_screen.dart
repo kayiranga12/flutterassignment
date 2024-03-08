@@ -1,25 +1,72 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:navbarhomeaboutcalculatorapp/components/custom_scaffold.dart';
+import 'package:navbarhomeaboutcalculatorapp/main.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/forget_passsword.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/home.dart';
 import 'package:navbarhomeaboutcalculatorapp/pages/signup_screen.dart';
 import '../theme/theme.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  const SignInScreen({Key? key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final _formSignInKey = GlobalKey<FormState>();
+  String email = "";
+  String password = "";
+
+  final TextEditingController mailcontroller = TextEditingController();
+  final TextEditingController passwordcontroller = TextEditingController();
+
+  final GlobalKey<FormState> _formSignInKey = GlobalKey<FormState>();
   bool rememberPassword = true;
+
+  void userLogin() async {
+    if (_formSignInKey.currentState!.validate()) {
+      email = mailcontroller.text;
+      password = passwordcontroller.text;
+
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MyApp()),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "No User Found for that Email",
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ));
+        } else if (e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "Wrong Password Provided by User",
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ));
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       child: Column(
         children: [
-          const Expanded(
+          Expanded(
             flex: 1,
             child: SizedBox(
               height: 10,
@@ -54,6 +101,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 40.0,
                       ),
                       TextFormField(
+                        controller: mailcontroller,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -84,6 +132,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 25.0,
                       ),
                       TextFormField(
+                        controller: passwordcontroller,
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
@@ -115,6 +164,31 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
+                      GestureDetector(
+                        onTap: userLogin,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 13.0, horizontal: 30.0),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF273671),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Sign In",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 25.0,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -138,69 +212,21 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                           GestureDetector(
-                            child: Text(
-                              'Forget password?',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ForgotPassword(),
                                 ),
                               );
-                            } else if (!rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Please agree to the processing of personal data')),
-                              );
-                            }
-                          },
-                          child: const Text('Sign up'),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 0,
-                              horizontal: 10,
-                            ),
+                            },
                             child: Text(
-                              'Sign up with',
+                              "Forgot Password?",
                               style: TextStyle(
-                                color: Colors.black45,
+                                color: Color(0xFF8c8e98),
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w500,
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.grey.withOpacity(0.5),
                             ),
                           ),
                         ],
@@ -208,19 +234,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                     children: [
-                    // CustomLogo(icon: FontAwesome.a.facebook),
-                     CustomLogo(icon: FontAwesome.twitter),
-                     CustomLogo(icon: FontAwesome.google),
-                     CustomLogo(icon: FontAwesome.apple),
-                    ],
-                         ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      // don't have an account
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -235,7 +248,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (e) => const SignUpScreen(),
+                                  builder: (context) => const SignUpScreen(),
                                 ),
                               );
                             },
@@ -263,6 +276,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
+
 class CustomLogo extends StatelessWidget {
   final IconData icon;
 

@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:navbarhomeaboutcalculatorapp/components/custom_scaffold.dart';
+import 'package:navbarhomeaboutcalculatorapp/main.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/home.dart';
 import 'package:navbarhomeaboutcalculatorapp/pages/signin_screen.dart';
 import 'package:navbarhomeaboutcalculatorapp/theme/theme.dart';
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -13,17 +15,68 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  String email = "", password = "", name = "";
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   final _formSignupKey = GlobalKey<FormState>();
+
   bool agreePersonalData = true;
+
+  registration() async {
+    if (password.isNotEmpty && name.isNotEmpty && email.isNotEmpty) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Registered Successfully",
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MyApp()),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Password Provided is too Weak",
+                style: TextStyle(fontSize: 18.0),
+              ),
+            ),
+          );
+        } else if (e.code == "email-already-in-use") {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Account Already exists",
+                style: TextStyle(fontSize: 18.0),
+              ),
+            ),
+          );
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       child: Column(
         children: [
-          const Expanded(
+          Expanded(
             flex: 1,
-            child: SizedBox(
+            child: Container(
               height: 10,
             ),
           ),
@@ -56,6 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 40.0,
                       ),
                       TextFormField(
+                        controller: nameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Full name';
@@ -86,6 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 25.0,
                       ),
                       TextFormField(
+                        controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -116,6 +171,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 25.0,
                       ),
                       TextFormField(
+                        controller: passwordController,
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
@@ -176,28 +232,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formSignupKey.currentState!.validate() &&
-                                agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
-                              );
-                            } else if (!agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Please agree to the processing of personal data',
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text('Sign up'),
+                      GestureDetector(
+                        onTap: () {
+                          if (_formSignupKey.currentState!.validate()) {
+                            setState(() {
+                              email = emailController.text;
+                              name = nameController.text;
+                              password = passwordController.text;
+                            });
+                            registration();
+                          }
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 13.0, horizontal: 30.0),
+                          decoration: BoxDecoration(
+                              color: Color(0xFF273671),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Center(
+                              child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.w500),
+                          )),
                         ),
                       ),
                       const SizedBox(
@@ -235,15 +295,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 30.0,
                       ),
-                                  Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    // CustomLogo(icon: FontAwesome.a.facebook),
-    CustomLogo(icon: FontAwesome.twitter),
-    CustomLogo(icon: FontAwesome.google),
-    CustomLogo(icon: FontAwesome.apple),
-  ],
-),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Logo(Logos.facebook_f),
+                          Logo(Logos.twitter),
+                          Logo(Logos.google),
+                          Logo(Logos.apple),
+                        ],
+                      ),
                       const SizedBox(
                         height: 25.0,
                       ),
@@ -300,4 +360,3 @@ class CustomLogo extends StatelessWidget {
     return Icon(icon, size: 40, color: Colors.blue); // Adjust size and color as needed
   }
 }
-

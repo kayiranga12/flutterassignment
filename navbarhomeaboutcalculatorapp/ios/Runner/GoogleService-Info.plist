@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>455053830319-2dkjpb88m1l09rk8v95ns15t6l2ks6jj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.455053830319-2dkjpb88m1l09rk8v95ns15t6l2ks6jj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCl3H2EERzEdDN7C3lRJ4d5pnDuOZ7QmRA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>455053830319</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.navbarhomeaboutcalculatorapp</string>
+	<key>PROJECT_ID</key>
+	<string>navbarhomeaboutcalculatorapp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>navbarhomeaboutcalculatorapp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:455053830319:ios:2a001ab305fcc9a3828c5a</string>
+	<key>DATABASE_URL</key>
+	<string>https://navbarhomeaboutcalculatorapp-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
