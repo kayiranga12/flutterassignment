@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:navbarhomeaboutcalculatorapp/components/custom_scaffold.dart';
 import 'package:navbarhomeaboutcalculatorapp/main.dart';
@@ -27,7 +28,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   registration() async {
     if (password.isNotEmpty && name.isNotEmpty && email.isNotEmpty) {
       try {
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -66,6 +68,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
           );
         }
       }
+    }
+  }
+
+  void signUpWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Signed up with Google successfully",
+            style: TextStyle(fontSize: 20.0),
+          ),
+        ),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
+    } catch (e) {
+      print(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            "Failed to sign up with Google",
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+      );
     }
   }
 
@@ -251,13 +291,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Color(0xFF273671),
                               borderRadius: BorderRadius.circular(30)),
                           child: Center(
-                              child: Text(
-                            "Sign Up",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22.0,
-                                fontWeight: FontWeight.w500),
-                          )),
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -272,8 +313,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Colors.grey.withOpacity(0.5),
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 0,
                               horizontal: 10,
                             ),
@@ -301,6 +342,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Logo(Logos.facebook_f),
                           Logo(Logos.twitter),
                           Logo(Logos.google),
+                          GestureDetector(
+                            onTap: signUpWithGoogle,
+                            child: Logo(Logos.google), // Add Google sign-up option
+                          ),
                           Logo(Logos.apple),
                         ],
                       ),
