@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:navbarhomeaboutcalculatorapp/components/custom_scaffold.dart';
 import 'package:navbarhomeaboutcalculatorapp/main.dart';
@@ -58,6 +59,44 @@ class _SignInScreenState extends State<SignInScreen> {
           ));
         }
       }
+    }
+  }
+
+  void signUpWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Signed up with Google successfully",
+            style: TextStyle(fontSize: 20.0),
+          ),
+        ),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
+    } catch (e) {
+      print(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            "Failed to sign up with Google",
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+      );
     }
   }
 
@@ -264,6 +303,19 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       const SizedBox(
                         height: 20.0,
+                      ),
+                         Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Logo(Logos.facebook_f),
+                          Logo(Logos.twitter),
+                          Logo(Logos.google),
+                          GestureDetector(
+                            onTap: signUpWithGoogle,
+                            child: Logo(Logos.google), // Add Google sign-up option
+                          ),
+                          Logo(Logos.apple),
+                        ],
                       ),
                     ],
                   ),
