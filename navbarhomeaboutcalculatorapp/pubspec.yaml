@@ -14,6 +14,7 @@ dependencies:
   provider: ^6.1.1
   connectivity: ^3.0.6
   icons_plus: ^4.0.0
+  flutter_svg: ^2.0.10+1  # Upgrade constraint on flutter_svg
   image_picker: ^1.0.4
   contacts_service: ^0.6.3
   url_launcher: ^6.2.5  # Keep only one instance of url_launcher
@@ -23,7 +24,6 @@ dependencies:
   google_sign_in: ^5.2.1
   cloud_firestore: ^4.13.1
   the_apple_sign_in: ^1.1.1
-  flutter_svg: ^1.0.0
   get: ^4.6.6
   logger: ^2.1.0
   easy_separator: ^1.0.1
@@ -34,6 +34,8 @@ dependencies:
   flutter_native_splash: ^2.3.10
   flutter_local_notifications: ^16.3.3
   http: ^1.2.1
+  path_provider: ^2.1.2
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:
