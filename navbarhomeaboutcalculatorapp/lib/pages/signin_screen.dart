@@ -36,9 +36,18 @@ class _SignInScreenState extends State<SignInScreen> {
           email: email,
           password: password,
         );
-        Navigator.push(
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.green,
+          content: Text(
+            "Signin Successful",
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ));
+        // Navigate to home screen
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MyApp()),
+          MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')),
         );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
@@ -82,9 +91,9 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       );
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MyApp()),
+        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')),
       );
     } catch (e) {
       print(e.toString());
@@ -304,12 +313,11 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                         Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Logo(Logos.facebook_f),
                           Logo(Logos.twitter),
-                          Logo(Logos.google),
                           GestureDetector(
                             onTap: signUpWithGoogle,
                             child: Logo(Logos.google), // Add Google sign-up option

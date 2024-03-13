@@ -11,15 +11,11 @@ class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
 
   @override
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Assignment',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 59, 94, 165)),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'About Page'), // Reverted back to MyHomePage
+      home: AboutPage(),
     );
   }
 }

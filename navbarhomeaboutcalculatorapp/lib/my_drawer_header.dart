@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHeaderDrawer extends StatefulWidget {
-  const MyHeaderDrawer({super.key});
+  const MyHeaderDrawer({Key? key}) : super(key: key);
 
   @override
   State<MyHeaderDrawer> createState() => _MyHeaderDrawerState();
@@ -13,6 +15,28 @@ class MyHeaderDrawer extends StatefulWidget {
 class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
   Uint8List? _image;
   File? selectedImage;
+  late SharedPreferences _prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    loadProfileImage();
+  }
+
+  Future<void> loadProfileImage() async {
+    _prefs = await SharedPreferences.getInstance();
+    final imageData = _prefs.getString('profile_image');
+    if (imageData != null) {
+      setState(() {
+        _image = Uint8List.fromList(imageData.codeUnits);
+      });
+    }
+  }
+
+  void saveProfileImage(Uint8List image) async {
+    final imageData = String.fromCharCodes(image);
+    await _prefs.setString('profile_image', imageData);
+  }
 
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
@@ -72,24 +96,26 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
 
   // Gallery
   Future _pickImageFromGallery() async {
-    final returnImage =
+    final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (returnImage == null) return;
+    if (pickedImage == null) return;
     setState(() {
-      selectedImage = File(returnImage.path);
-      _image = File(returnImage.path).readAsBytesSync();
+      selectedImage = File(pickedImage.path);
+      _image = File(pickedImage.path).readAsBytesSync();
+      saveProfileImage(_image!);
     });
     Navigator.of(context).pop(); // close the modal sheet
   }
 
   // Camera
   Future _pickImageFromCamera() async {
-    final returnImage =
+    final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
-    if (returnImage == null) return;
+    if (pickedImage == null) return;
     setState(() {
-      selectedImage = File(returnImage.path);
-      _image = File(returnImage.path).readAsBytesSync();
+      selectedImage = File(pickedImage.path);
+      _image = File(pickedImage.path).readAsBytesSync();
+      saveProfileImage(_image!);
     });
     Navigator.of(context).pop();
   }
@@ -97,42 +123,52 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 60, 112, 218), 
+      color: Color.fromARGB(255, 60, 112, 218),
       width: double.infinity,
       height: 200,
       padding: EdgeInsets.only(top: 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          selectedImage != null
-              ? CircleAvatar(
-                  radius: 60, backgroundImage: MemoryImage(_image!))
-              : const CircleAvatar(
-                  radius: 60,
-                  backgroundImage: NetworkImage(
-                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"),
+          Stack(
+            children: [
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: _image != null
+                    ? MemoryImage(_image!)
+                    : NetworkImage(
+                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png") as ImageProvider<Object>?,
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: GestureDetector(
+                  onTap: () {
+                    showImagePickerOption(context);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.blue,
+                    ),
+                    child: Icon(
+                      Icons.add_a_photo,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-          // Text("Profile", style: TextStyle(color: Colors.white, fontSize: 30)),
-          Text("Kayiranga420@gmail.com",
-              style: TextStyle(color: Colors.grey[200], fontSize: 14)),
-          SizedBox(height: 5),
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
           GestureDetector(
             onTap: () {
               showImagePickerOption(context);
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.add_a_photo,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  'Change Picture',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
+            child: Text(
+              'kayiranga420@gmail.com',
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ],

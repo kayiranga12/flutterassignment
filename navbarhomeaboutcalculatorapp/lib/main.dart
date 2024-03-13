@@ -1,12 +1,24 @@
-import 'package:flutter/material.dart';
-import 'package:navbarhomeaboutcalculatorapp/Provider/provider.dart';
-import 'package:navbarhomeaboutcalculatorapp/pages/home.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/home.dart';
+import 'package:navbarhomeaboutcalculatorapp/pages/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  Platform.isAndroid
+  ?await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: 'AIzaSyAYlujzRyVpmQ3Oyc8sIcYgQL217v8QgR8',
+       appId: '1:455053830319:android:bb7cd76e484347e8828c5a',
+        messagingSenderId: '455053830319',
+         projectId: 'navbarhomeaboutcalculatorapp'
+         ))
+         : await Firebase.initializeApp();
+  
+  //   await initFireBase(); // Wait for Firebase to initialize
+  // InitialBinding().dependencies(); // Register dependencies using InitialBinding
   runApp(const MyApp());
 }
 
@@ -18,23 +30,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Assignment',
-      home: MyHomePage(title: 'Home Page'),
+      // home: MyHomePage(title: 'Home Page'),
+      home: const WelcomeScreen(),
+      
     );
   }
 }
 
+// Future<void> initFireBase() async {
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+// }
 
-Future<void> initFirebase() async {
-  await Firebase.initializeApp(
-    name: 'quizzle-demo',
-    options: FirebaseOptions(
-      apiKey: 'your_api_key',
-      authDomain: 'your_auth_domain',
-      projectId: 'your_project_id',
-      storageBucket: 'your_storage_bucket',
-      messagingSenderId: 'your_messaging_sender_id',
-      appId: 'your_app_id',
-    ),
-  );
-}
-
+// void main(List<String> args) async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await initFireBase();
+//   runApp(GetMaterialApp(
+//     home: DataUploaderScreen(),
+//   ));
+// }

@@ -49,6 +49,8 @@ android {
 
         // Enable multidex
         multiDexEnabled true
+
+
     }
 
     buildTypes {
@@ -71,5 +73,7 @@ flutter {
 dependencies {
     // Add the multidex dependency
     implementation 'com.android.support:multidex:2.0.1'
+
+
 }
 

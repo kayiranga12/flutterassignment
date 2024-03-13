@@ -341,7 +341,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         children: [
                           Logo(Logos.facebook_f),
                           Logo(Logos.twitter),
-                          Logo(Logos.google),
+                          // Logo(Logos.google),
                           GestureDetector(
                             onTap: signUpWithGoogle,
                             child: Logo(Logos.google), // Add Google sign-up option
